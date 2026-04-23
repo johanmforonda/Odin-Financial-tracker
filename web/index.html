@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Odin Finance Web</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div>
+          <p class="eyebrow">Panel de negocio</p>
+          <h1>Odin</h1>
+          <p class="brand-copy">Control financiero..</p>
+        </div>
+      </div>
+      <nav class="tabs" id="tabs">
+        <button class="tab is-active" data-tab="products">Productos</button>
+        <button class="tab" data-tab="variable">Gastos variables</button>
+        <button class="tab" data-tab="fixed">Gastos fijos</button>
+        <button class="tab" data-tab="stats">Estadísticas</button>
+      </nav>
+      <div class="sidebar-card" id="today-sales-card"></div>
+    </aside>
+
+    <main class="content">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow" id="page-kicker">Catálogo</p>
+          <h2 id="page-title">Productos</h2>
+        </div>
+        <div class="topbar-actions">
+          <label class="month-picker">
+            <span>Mes</span>
+            <input type="month" id="month-input">
+          </label>
+          <button class="ghost-button" id="refresh-button">Actualizar</button>
+        </div>
+      </header>
+      <section class="page is-visible" data-page="products"> 
+        <div class="hero">
+          <div class="hero-copy">
+            <p class="eyebrow">CatÃ¡logo activo</p>
+            <h3>Gestiona productos, precios y ventas desde un solo flujo</h3>
+            <p>
+              Da de alta nuevos productos, vincula sus costes variables y registra ventas
+              sin salir de esta vista.
+            </p>
+          </div>
+          <div class="hero-actions">
+            <button class="primary-button" id="open-product-modal">AÃ±adir producto</button>
+            <button class="ghost-button" id="hero-sell-button">Registrar venta</button>
+          </div>
+        </div>
+        <div class="product-toolbar panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Alta rápida</p>
+              <h3>Nuevo producto</h3>
+            </div>
+            <p class="muted">Solo nombre, precio y costes variables indispensables.</p>
+          </div>
+          <form id="quick-product-form" class="inline-form">
+            <input type="text" id="product-name" placeholder="Nombre del producto" required>
+            <input type="number" id="product-price" placeholder="Precio de venta" min="0" step="0.01">
+            <select id="product-cost-selector"></select>
+            <button class="primary-button" type="submit">Guardar producto</button>
+          </form>
+          <div class="selected-costs" id="selected-costs"></div>
+        </div>
+
+        <div class="metrics-grid" id="product-metrics"></div>
+        <div class="product-grid" id="product-grid"></div>
+      </section>
+
+      <section class="page" data-page="variable">
+        <div class="split-header">
+          <div>
+            <p class="eyebrow">Costes variables</p>
+            <h3>Control visual del gasto por venta</h3>
+          </div>
+          <button class="primary-button" data-open-cost-modal="variable">Añadir gasto variable</button>
+        </div>
+        <div class="cost-layout">
+          <div class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Reparto</p>
+                <h3>Total y peso porcentual</h3>
+              </div>
+              <p class="muted" id="variable-total"></p>
+            </div>
+            <div class="donut-wrap">
+              <div class="donut" id="variable-donut"></div>
+              <div class="legend" id="variable-legend"></div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Listado</p>
+                <h3>Todos los gastos variables</h3>
+              </div>
+            </div>
+            <div class="cost-list" id="variable-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" data-page="fixed">
+        <div class="split-header">
+          <div>
+            <p class="eyebrow">Costes fijos</p>
+            <h3>Lo que más pesa en tu estructura mensual</h3>
+          </div>
+          <button class="primary-button" data-open-cost-modal="fixed">Añadir gasto fijo</button>
+        </div>
+        <div class="cost-layout">
+          <div class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Reparto</p>
+                <h3>Total y peso porcentual</h3>
+              </div>
+              <p class="muted" id="fixed-total"></p>
+            </div>
+            <div class="donut-wrap">
+              <div class="donut" id="fixed-donut"></div>
+              <div class="legend" id="fixed-legend"></div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Listado</p>
+                <h3>Todos los gastos fijos</h3>
+              </div>
+            </div>
+            <div class="cost-list" id="fixed-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" data-page="stats">
+        <div class="stats-cards" id="stats-cards"></div>
+        <div class="stats-layout">
+          <article class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Evolución</p>
+                <h3>Rentabilidad mensual</h3>
+              </div>
+            </div>
+            <div class="line-chart" id="line-chart"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Rendimiento</p>
+                <h3>Productos con más ingresos</h3>
+              </div>
+            </div>
+            <div class="bar-chart" id="bar-chart"></div>
+          </article>
+          <article class="panel full-width">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Actividad</p>
+                <h3>Ventas por día</h3>
+              </div>
+            </div>
+            <div class="activity-strip" id="activity-strip"></div>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop hidden" id="modal-backdrop">
+    <div class="modal" id="modal-content"></div>
+  </div>
+
+  <template id="product-modal-template">
+    <div class="modal-header">
+      <div>
+        <p class="eyebrow">Producto</p>
+        <h3 id="product-modal-title">Añadir producto</h3>
+      </div>
+      <button class="icon-button" data-close-modal>&times;</button>
+    </div>
+    <form id="product-modal-form" class="modal-form">
+      <input type="hidden" name="product_id">
+      <label>
+        <span>Nombre</span>
+        <input type="text" name="name" required>
+      </label>
+      <label>
+        <span>Precio de venta</span>
+        <input type="number" name="sale_price" min="0" step="0.01">
+      </label>
+      <label>
+        <span>Costes variables vinculados</span>
+        <div class="chip-picker" id="product-modal-costs"></div>
+      </label>
+      <div class="modal-actions">
+        <button type="button" class="ghost-button" data-close-modal>Cancelar</button>
+        <button type="submit" class="primary-button">Guardar</button>
+      </div>
+    </form>
+  </template>
+
+  <template id="cost-modal-template">
+    <div class="modal-header">
+      <div>
+        <p class="eyebrow">Gasto</p>
+        <h3 id="cost-modal-title">Añadir gasto</h3>
+      </div>
+      <button class="icon-button" data-close-modal>&times;</button>
+    </div>
+    <form id="cost-modal-form" class="modal-form">
+      <input type="hidden" name="cost_id">
+      <input type="hidden" name="cost_type">
+      <label>
+        <span>Nombre</span>
+        <input type="text" name="name" required>
+      </label>
+      <label>
+        <span>Importe</span>
+        <input type="number" name="amount" min="0" step="0.01" required>
+      </label>
+      <div class="modal-actions">
+        <button type="button" class="ghost-button" data-close-modal>Cancelar</button>
+        <button type="submit" class="primary-button">Guardar</button>
+      </div>
+    </form>
+  </template>
+
+  <script src="/app.js"></script>
+</body>
+</html>
