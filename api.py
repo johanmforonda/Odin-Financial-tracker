@@ -1,4 +1,4 @@
-from odin_api import run_api
+from backend.odin_api import run_api
 
 
 if __name__ == "__main__":
