@@ -142,7 +142,7 @@ class ProductRepository:
         with self.database.connect() as connection:
             rows = connection.execute(
                 """
-                SELECT c.id, c.name, c.amount, c.cost_type
+                SELECT c.id, c.name, c.amount, c.cost_type, c.recorded_at
                 FROM costs c
                 INNER JOIN product_variable_costs pvc ON pvc.cost_id = c.id
                 WHERE pvc.product_id = ?
@@ -233,4 +233,5 @@ class ProductRepository:
             name=row["name"],
             amount=Decimal(row["amount"]),
             cost_type=CostType(row["cost_type"]),
+            recorded_at=row["recorded_at"],
         )
