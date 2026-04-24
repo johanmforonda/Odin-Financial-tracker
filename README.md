@@ -1,39 +1,152 @@
 # Odin
 
-Odin es un sistema de decision financiera para pequenos negocios. Incluye un CLI interactivo y ahora tambien una API HTTP para que otro frontend pueda consumir todas las features del sistema.
+**Odin** is a financial decision system designed for small businesses to calculate **minimum viable pricing** based on real cost structures.
 
-## Caracteristicas
+The system helps answer a key business question:
 
-- Gestion de productos
-- Gestion de costes fijos y variables
-- Asignacion de costes variables a productos
-- Recomendacion de precios segun ingresos objetivo
-- Registro y consulta de ventas
-- Resumen financiero y evolucion de rentabilidad
-- API HTTP para integracion con frontend externo
+> Is this product financially sustainable?
 
-## Estructura
+---
 
-- `core/`: logica de dominio y servicios
-- `data/`: SQLite, esquema y repositorios
-- `odin_api/`: servidor HTTP y endpoints por servicio
-- `app/`: composicion compartida y arranque de servicios
-- `cli/ui.py`: helpers de presentacion y estetica del terminal
-- `cli/app.py`: flujo interactivo y logica del CLI
-- `api.py`: punto de entrada del servidor HTTP
-- `cly.py`: punto de entrada del CLI
-- `main.py`: alias de compatibilidad para levantar la API
+## Overview
 
-## Ejecucion
+Odin provides a structured way to:
 
-CLI:
+- Track products, costs, and sales
+- Understand cost structure
+- Calculate sustainable pricing
+- Analyze profitability
 
-```bash
-python cly.py
+It is built as a **modular backend system** with multiple interfaces:
+- CLI (command-line interface)
+- HTTP API (for frontend integration)
+
+---
+
+## Architecture
+
+The project follows a layered architecture:
+
 ```
 
-API:
+core/        → Domain logic and business rules
+data/        → Persistence (repositories + SQLite)
+odin_api/    → HTTP API layer (handlers + routing)
+cli/         → Command-line interface
+app/         → Application bootstrap
+
+```
+
+### Key Concepts
+
+- Domain-driven structure (domain, services, models)
+- Repository pattern for persistence
+- Service layer for business logic
+- Custom HTTP dispatcher (no external frameworks)
+
+---
+
+## Features
+
+- Product management
+- Fixed and variable cost tracking
+- Sales tracking
+- Pricing logic based on cost structure
+- Financial statistics and analysis
+
+---
+
+## API
+
+The backend exposes an HTTP API under:
+
+```
+
+[http://127.0.0.1:8000/api](http://127.0.0.1:8000/api)
+
+````
+
+## Running the API
 
 ```bash
 python api.py
+````
+
+Then open:
+
+```
+http://127.0.0.1:8000/api/health
+```
+
+---
+
+## CLI Interface
+
+The project also includes a CLI interface:
+
+```bash
+python cli.py
+```
+
+This allows interacting with the system without a frontend.
+
+---
+
+## Frontend Integration
+
+This backend is designed to be consumed by a frontend application.
+
+Important:
+
+* Do not interact directly with internal code
+* Use only the `/api` endpoints
+* All communication is JSON-based
+
+---
+
+## Design Decisions
+
+* Backend-first approach
+* Clear separation of concerns (domain, infrastructure, interface)
+* Custom HTTP server instead of frameworks for full control
+* API designed as a contract for external clients (e.g. frontend)
+
+---
+
+## Tech Stack
+
+* Python
+* SQLite
+* Custom HTTP server (`BaseHTTPRequestHandler`)
+
+---
+
+## Current Status
+
+* Functional backend system
+* API ready for frontend integration
+* CLI-based interface available
+* Frontend under development
+
+---
+
+## Author
+
+**Johan Andres Martinez Foronda**
+
+* Backend development
+* System design
+* Business-oriented software
+
+Note:
+The frontend is being developed separately.
+This repository focuses on backend architecture, business logic, and data handling.
+
+---
+
+## Disclaimer
+
+This is an MVP intended for learning, iteration, and demonstration.
+Not production-ready.
+
 ```
